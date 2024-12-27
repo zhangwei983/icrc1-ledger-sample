@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "icrc1-ledger-sample": {
+      "candid": "src/icrc1-ledger-sample/icrc1-ledger-sample.did",
+      "package": "icrc1-ledger-sample",
+      "type": "rust",
+      "dependencies": [
+        "icrc1-ledger"
+      ]
+    },
+    "icrc1-ledger": {
+      "type": "custom",
+      "candid": "src/icrc1-ledger/ledger.did",
+      "wasm": "src/icrc1-ledger/icrc1-ledger.wasm.gz",
+      "init_arg": "(variant { Init = record { token_symbol = \"ICRC1\"; token_name = \"L-ICRC1\"; minting_account = record { owner = principal \"tdrdy-ztedg-ftfrj-mwmqh-wjl3j-pty4c-j63lp-xfvtt-7jxvp-4ialz-3ae\" }; transfer_fee = 1; metadata = vec {}; initial_balances = vec {}; archive_options = record { num_blocks_to_archive = 1000; trigger_threshold = 2000; controller_id = principal \"tdrdy-ztedg-ftfrj-mwmqh-wjl3j-pty4c-j63lp-xfvtt-7jxvp-4ialz-3ae\"; }; } })"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
