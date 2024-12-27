@@ -1,4 +1,6 @@
 use candid::{CandidType, Principal};
+use ic_cdk::api::is_controller;
+use ic_cdk::caller;
 use icrc_ledger_types::icrc1::account::Account;
 use icrc_ledger_types::icrc1::transfer::{BlockIndex, NumTokens, TransferArg, TransferError};
 use serde::{Deserialize, Serialize};
@@ -37,17 +39,21 @@ fn set_icrc1_ledger(ledger_id: Principal) {
 }
 
 #[ic_cdk::query]
-fn get_icrc1_ledger() -> Principal{
-    STATE.with (|state| state.borrow().icrc1_ledger_id)
+fn get_icrc1_ledger() -> Principal {
+    STATE.with(|state| state.borrow().icrc1_ledger_id)
 }
 
 #[ic_cdk::update]
 async fn transfer(args: TransferArguments) -> Result<BlockIndex, TransferError> {
-    if !STATE.with (|state| state.borrow().initialized) {
+    if !STATE.with(|state| state.borrow().initialized) {
         panic!("Please call 'set_icrc1_ledger' to initialize the IRCR-1 ledger first.");
     }
 
-    let transfer_arg : TransferArg = TransferArg {
+    if !is_controller(&caller()) {
+        panic!("Only the controllers can transfer from this canister.");
+    }
+
+    let transfer_arg: TransferArg = TransferArg {
         from_subaccount: None, // Subaccount with 0.
         to: args.to,
         amount: args.amount,
@@ -57,7 +63,7 @@ async fn transfer(args: TransferArguments) -> Result<BlockIndex, TransferError> 
     };
 
     ic_cdk::call::<(TransferArg,), (Result<BlockIndex, TransferError>,)>(
-        STATE.with (|state| state.borrow().icrc1_ledger_id),
+        STATE.with(|state| state.borrow().icrc1_ledger_id),
         "icrc1_transfer",
         (transfer_arg,),
     )
