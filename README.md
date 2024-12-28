@@ -29,6 +29,8 @@ You can find the ledger Wasm and candid files at [ledger-suite-icrc-2024-11-28](
 ### Transfer
 
 1. dfx canister call icrc1-ledger-sample transfer "(record {to=record {owner=principal \"$(dfx identity get-principal)\"; subaccount=null}; amount=100})"
+
+1. dfx canister call icrc1-ledger icrc1_balance_of "(record {owner=principal \"$(dfx canister id icrc1-ledger-sample)\"; subaccount=null})"
 1. dfx canister call icrc1-ledger icrc1_balance_of "(record {owner=principal \"$(dfx identity get-principal)\"; subaccount=null})"
 
 ### Transfer from
