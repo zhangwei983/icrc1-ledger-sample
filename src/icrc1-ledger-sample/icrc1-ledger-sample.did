@@ -1,5 +1,6 @@
 type Account = record { owner : principal; subaccount : opt blob };
 type Result = variant { Ok : nat; Err : TransferError };
+type Result_1 = variant { Ok : nat; Err : TransferFromError };
 type TransferArguments = record { to : Account; amount : nat };
 type TransferError = variant {
   GenericError : record { message : text; error_code : nat };
@@ -11,8 +12,25 @@ type TransferError = variant {
   TooOld;
   InsufficientFunds : record { balance : nat };
 };
+type TransferFromArguments = record {
+  to : Account;
+  from : Account;
+  amount : nat;
+};
+type TransferFromError = variant {
+  GenericError : record { message : text; error_code : nat };
+  TemporarilyUnavailable;
+  InsufficientAllowance : record { allowance : nat };
+  BadBurn : record { min_burn_amount : nat };
+  Duplicate : record { duplicate_of : nat };
+  BadFee : record { expected_fee : nat };
+  CreatedInFuture : record { ledger_time : nat64 };
+  TooOld;
+  InsufficientFunds : record { balance : nat };
+};
 service : {
   get_icrc1_ledger : () -> (principal) query;
   set_icrc1_ledger : (principal) -> ();
   transfer : (TransferArguments) -> (Result);
+  transfer_from : (TransferFromArguments) -> (Result_1);
 }
