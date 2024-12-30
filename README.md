@@ -69,7 +69,7 @@ You can find the ledger Wasm and candid files under [icrc1-ledger](./src/icrc1-l
    ```bash
    dfx canister call icrc1-ledger-sample transfer_from "(record {to=record {owner=principal \"$(dfx canister id icrc1-ledger-sample)\"; subaccount=null}; from=record {owner=principal \"$(dfx identity get-principal)\"; subaccount=null}; amount=99})"
    ```
-  Note: The `transfer_from` call on the ICRC-1 ledger takes transfer fee.
+   Note: The `transfer_from` call on the ICRC-1 ledger takes transfer fee.
 
 1. Verify the transfer
    ```bash
