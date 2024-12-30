@@ -22,8 +22,6 @@ pub struct TransferFromArguments {
     amount: NumTokens,
 }
 
-const MAX_VALUE_SIZE: u32 = 31; // Principal(30) + bool(1)
-
 #[derive(CandidType, Clone, Deserialize, Serialize)]
 pub struct State {
     icrc1_ledger_id: Principal,
@@ -48,10 +46,7 @@ impl Storable for State {
         Decode!(bytes.as_ref(), Self).unwrap()
     }
 
-    const BOUND: Bound = Bound::Bounded {
-        max_size: MAX_VALUE_SIZE,
-        is_fixed_size: true,
-    };
+    const BOUND: Bound = Bound::Unbounded;
 }
 
 thread_local! {
